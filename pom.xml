@@ -90,6 +90,11 @@
             <artifactId>spring-security-bom</artifactId>
             <version>5.1.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.14</version>
+        </dependency>
     </dependencies>
 
     <build>
