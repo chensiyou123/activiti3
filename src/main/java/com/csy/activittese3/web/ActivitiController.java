@@ -6,7 +6,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +27,17 @@ public class ActivitiController implements RestServiceController<ProcessDefiniti
     @Autowired
     private RuntimeService runtimeService;
 
+    @ApiOperation("根据process文件部署流程")
+    @GetMapping("deployment")
+    public Object deployment (@RequestParam("process")String process) {
+        Deployment deployment = repositoryService.createDeployment().addClasspathResource(process+".bpmn").deploy();
+        return ToWeb.buildResult().setObjData(deployment);
+    }
     @ApiOperation("启动一个流程")
     @GetMapping("start")
     public Object start(@RequestParam("key")String key) {
-        runtimeService.startProcessInstanceByKey(key);
-        return ToWeb.buildResult().refresh();
+        ProcessInstance processInstance= runtimeService.startProcessInstanceByKey(key);
+        return ToWeb.buildResult().setObjData(processInstance);
     }
 
     @Override
