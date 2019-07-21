@@ -11,18 +11,15 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Api(value="流程controller",description="流程操作",tags={"流程操作接口"})
+@Api(value="流程定义controller",description="流程定义操作",tags={"流程定义操作接口"})
 @RestController
 @RequestMapping("prof")
-public class ActivitiController implements RestServiceController<ProcessDefinition, String> {
+public class ActivitiController {
     @Autowired
     private RepositoryService repositoryService;
 
@@ -42,48 +39,15 @@ public class ActivitiController implements RestServiceController<ProcessDefiniti
         return ToWeb.buildResult().setObjData(processInstance);
     }
 
-    @Override
-    public Object getOne(String s) {
-        return null;
-    }
 
-    @ApiOperation("分页查询流程定义")
-    @Override
-    public Object getList(Integer rowSize, Integer page) {
-        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().listPage(rowSize * (page - 1), rowSize);
-        long count = repositoryService.createProcessDefinitionQuery().count();
-        List<ReProcdef> list = new ArrayList<>();
-        for (ProcessDefinition processDefinition : processDefinitions) {
-            ReProcdef reProcdef = new ReProcdef(processDefinition);
-            list.add(reProcdef);
-        }
-        return ToWeb.buildResult().setRows(
-                ToWeb.Rows.buildRows()
-                        .setRowSize(rowSize)
-                        .setTotalPages((int) (count / rowSize + 1))
-                        .setTotalRows(count)
-                        .setList(list)
-                        .setCurrent(page)
-        );
-    }
-
-    @Override
-    public Object postOne(ProcessDefinition entity) {
-        return null;
-    }
-
-    @Override
-    public Object putOne(String s, ProcessDefinition entity) {
-        return null;
-    }
-
-    @Override
-    public Object patchOne(String s, ProcessDefinition entity) {
-        return null;
-    }
-
-    @Override
-    public Object deleteOne(String s) {
-        return null;
+    @ApiOperation(value = "根据deploymentID删除定义的流程")
+    public Object deleteOne(@PathVariable("id")String id) {
+        //根据deploymentID删除定义的流程，普通删除
+        repositoryService.deleteDeployment(id);
+        System.out.println("普通删除--流程定义删除成功");
+        return ToWeb.buildResult().msg("删除成功");
+        //强制删除
+//        repositoryService.deleteDeployment(id, true);
+//        System.out.println("强制删除--流程定义删除成功");
     }
 }
