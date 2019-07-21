@@ -21,7 +21,7 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
 mybatis:
-  typeAliasesPackage: com.csy.hrserver.bean
+  typeAliasesPackage: com.csy.activittese3.bean
   mapperLocations: classpath:mapper/*.xml
 
 
