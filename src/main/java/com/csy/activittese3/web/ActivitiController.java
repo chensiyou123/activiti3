@@ -2,6 +2,7 @@ package com.csy.activittese3.web;
 
 import com.csy.activittese3.common.RestServiceController;
 import com.csy.activittese3.utils.ToWeb;
+import com.csy.activittese3.vo.ReProcdef;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RepositoryService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value="流程controller",description="流程操作",tags={"流程操作接口"})
@@ -45,12 +47,24 @@ public class ActivitiController implements RestServiceController<ProcessDefiniti
         return null;
     }
 
-
+    @ApiOperation("分页查询流程定义")
     @Override
     public Object getList(Integer rowSize, Integer page) {
-        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
-                .listPage(rowSize * (page - 1), rowSize);
-        return null;
+        List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().listPage(rowSize * (page - 1), rowSize);
+        long count = repositoryService.createProcessDefinitionQuery().count();
+        List<ReProcdef> list = new ArrayList<>();
+        for (ProcessDefinition processDefinition : processDefinitions) {
+            ReProcdef reProcdef = new ReProcdef(processDefinition);
+            list.add(reProcdef);
+        }
+        return ToWeb.buildResult().setRows(
+                ToWeb.Rows.buildRows()
+                        .setRowSize(rowSize)
+                        .setTotalPages((int) (count / rowSize + 1))
+                        .setTotalRows(count)
+                        .setList(list)
+                        .setCurrent(page)
+        );
     }
 
     @Override
