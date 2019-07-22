@@ -1,20 +1,14 @@
 package com.csy.activittese3.web;
 
-import com.csy.activittese3.common.RestServiceController;
 import com.csy.activittese3.utils.ToWeb;
-import com.csy.activittese3.vo.ReProcdef;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Api(value="流程定义controller",description="流程定义操作",tags={"流程定义操作接口"})
 @RestController
