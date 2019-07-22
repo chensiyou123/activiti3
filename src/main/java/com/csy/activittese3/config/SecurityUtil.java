@@ -1,4 +1,4 @@
-package com.csy.activittese3;
+package com.csy.activittese3.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

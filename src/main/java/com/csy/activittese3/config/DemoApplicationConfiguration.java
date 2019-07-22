@@ -1,4 +1,4 @@
-package com.csy.activittese3;
+package com.csy.activittese3.config;
 
 
 import java.util.Arrays;
